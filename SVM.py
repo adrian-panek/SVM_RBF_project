@@ -1,5 +1,6 @@
 import numpy
-from sklearn.datasets import make_blobs
+from pandas import read_csv
+from sklearn.datasets import make_classification
 from sklearn.base import BaseEstimator
 
 #learning_rate = 0.001
@@ -17,20 +18,18 @@ class SVM(BaseEstimator):
         y_pos_neg = [-1 if x<=0 else 1 for x in y]
         
         #inicjalizacja wektorów
-        self.w = numpy.zeros(X.shape[1])
+        self.w = numpy.zeros(2)
         self.b = 0
 
         i=0
         for val in X:
             #przypadek, gdy badana próbka znajduje się w dobrej klasie
-            if (y_pos_neg[i] * (numpy.dot(x[i], self.w) - self.b ) >= 1 ):
+            if (y_pos_neg[i] * (numpy.dot(X[i], self.w) - self.b ) >= 1 ):
                 #aktualizacja w
                 self.w = self.w-self.learning_rate * (2 * self.la * self.w)
                 #w tym przypadku b pozostaje niezmienione
-                print("1 case")
             else:
-                print("2 case")
-                self.w = self.w - self.learning_rate * ((2 * self.la * self.w) - numpy.dot(y_pos_neg[i], x[i]))
+                self.w = self.w - self.learning_rate * ((2 * self.la * self.w) - numpy.dot(y_pos_neg[i], X[i]))
                 self.b = self.b - (self.learning_rate * y_pos_neg[i])
             i+=1
 
@@ -38,11 +37,19 @@ class SVM(BaseEstimator):
         y = numpy.dot(X, self.w) - self.b
         return 1 if y>=0 else -1
 
-x, y = make_blobs(n_samples=50, n_features=2, centers=2, cluster_std=1.05)
+dataset = read_csv("dataset/Cancer_Data.csv")
+y = []
+X = [[rad_mn, txt_mn] for rad_mn, txt_mn in zip(dataset.radius_mean, dataset.texture_mean)]
+
+for val in dataset.diagnosis:
+    if val == 'M':
+        y.append(1)
+    y.append(0)
+
 cls = SVM()
-cls.fit(x,y)
-print(cls.predict(x[-1]))
-print(y[-1])
-print(f"{cls.b}, {cls.w}")
+cls.fit(X,y)
+print(cls.predict(X[1]))
+print(y[1])
+# print(f"{cls.b}, {cls.w}")
 # import ipdb
 # ipdb.set_trace()
