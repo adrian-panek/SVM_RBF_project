@@ -39,7 +39,7 @@ class SVM(BaseEstimator):
 
 dataset = read_csv("dataset/Cancer_Data.csv")
 y = []
-X = [[rad_mn, txt_mn] for rad_mn, txt_mn in zip(dataset.radius_mean, dataset.texture_mean)]
+x = [[rad_mn, txt_mn] for rad_mn, txt_mn in zip(dataset.radius_mean, dataset.texture_mean)]
 
 for val in dataset.diagnosis:
     if val == 'M':
@@ -47,9 +47,10 @@ for val in dataset.diagnosis:
     y.append(0)
 
 cls = SVM()
-cls.fit(X,y)
-print(cls.predict(X[1]))
+cls.fit(x,y)
+print(cls.predict(x[1]))
 print(y[1])
+
 # print(f"{cls.b}, {cls.w}")
 # import ipdb
 # ipdb.set_trace()
