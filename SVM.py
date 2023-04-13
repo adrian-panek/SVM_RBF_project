@@ -1,4 +1,6 @@
 import numpy as np
+from scipy.spatial import distance_matrix
+from scipy.spatial.distance import cdist
 import ipdb
 from pandas import read_csv
 from sklearn.datasets import make_blobs, make_classification, make_circles
@@ -42,29 +44,27 @@ class SVM(BaseEstimator):
             y_pred.append(y_i)
         return y_pred
      
-
 def RBF(X, gamma):
-    ipdb.set_trace()
-    print(X[:, 0]) # pierwszy wektor
-    print(X[:, 1]) # drugi wektor
+    if gamma == None:
+        print("Gamma cannot be set to none!")
+    dist_cdist = cdist(X, X, 'euclidean')
+    K = np.exp(-gamma*(dist_cdist)**2)
+    return K
 
-
-X, y = make_circles(n_samples=10, noise=0.06, random_state=42)
-
-# X = RBF(X, gamma=None)
-
+X, y = make_classification(n_samples=500, n_features=2, n_informative=2, n_redundant=0, n_repeated=0)
+# X = RBF(X, 1.0)
 
 # testy zaimplementowanego klasyfikatora
 MyClassifier = SVM()
 MyClassifier.fit(X,y)
 MyClass_pred = MyClassifier.predict(X)
-print(f"My implemented Classifier prediction: {MyClass_pred}")
+# print(f"My implemented Classifier prediction: {MyClass_pred}")
 # print(f"My implemented Classifier accuracy: {accuracy_score(y, MyClass_pred)}")
 
-ImplementedClassifier = SVC()
-ImplementedClassifier.fit(X,y)
-ImplementedClass_pred = ImplementedClassifier.predict(X)
-print(f"Scikit-learn implemented Classifier prediction: {ImplementedClass_pred}")
+# ImplementedClassifier = SVC()
+# ImplementedClassifier.fit(X,y)
+# ImplementedClass_pred = ImplementedClassifier.predict(X)
+# print(f"Scikit-learn implemented Classifier prediction: {ImplementedClass_pred}")
 # print(f"Scikit-learn implemented Classifier accuracy: {accuracy_score(y, ImplementedClass_pred)}")
 
 
