@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.spatial import distance_matrix
 from scipy.spatial.distance import cdist
 import ipdb
 from pandas import read_csv
@@ -7,6 +6,7 @@ from sklearn.datasets import make_blobs, make_classification, make_circles
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 from sklearn.base import BaseEstimator
+from sklearn.metrics.pairwise import rbf_kernel
 
 class SVM(BaseEstimator):
     def __init__(self):
@@ -51,13 +51,14 @@ def RBF(X, gamma):
     K = np.exp(-gamma*(dist_cdist)**2)
     return K
 
-X, y = make_classification(n_samples=500, n_features=2, n_informative=2, n_redundant=0, n_repeated=0)
-# X = RBF(X, 1.0)
+X, y = make_circles(n_samples=500, noise=0.06, random_state=58)
+X = RBF(X, 1.0)
+# X = rbf_kernel(X, gamma=1.0)
 
 # testy zaimplementowanego klasyfikatora
-MyClassifier = SVM()
-MyClassifier.fit(X,y)
-MyClass_pred = MyClassifier.predict(X)
+# MyClassifier = SVM()
+# MyClassifier.fit(X,y)
+# MyClass_pred = MyClassifier.predict(X)
 # print(f"My implemented Classifier prediction: {MyClass_pred}")
 # print(f"My implemented Classifier accuracy: {accuracy_score(y, MyClass_pred)}")
 
