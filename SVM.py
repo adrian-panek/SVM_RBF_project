@@ -17,6 +17,7 @@ class SVM(BaseEstimator):
 
     def fit(self, X, y):
         y_pos_neg = [-1 if x<=0 else 1 for x in y]
+        print(y_pos_neg)
         
         #inicjalizacja wektorów
         self.w = np.zeros(X.shape[1])
@@ -52,12 +53,12 @@ def RBF(X, gamma):
     return K
 
 X, y = make_circles(n_samples=500, noise=0.06, random_state=58)
-X = RBF(X, 1.0)
+# X = RBF(X, 1.0)
 # X = rbf_kernel(X, gamma=1.0)
 
 # testy zaimplementowanego klasyfikatora
-# MyClassifier = SVM()
-# MyClassifier.fit(X,y)
+MyClassifier = SVM()
+MyClassifier.fit(X,y)
 # MyClass_pred = MyClassifier.predict(X)
 # print(f"My implemented Classifier prediction: {MyClass_pred}")
 # print(f"My implemented Classifier accuracy: {accuracy_score(y, MyClass_pred)}")
