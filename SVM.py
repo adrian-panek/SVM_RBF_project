@@ -10,7 +10,7 @@ class SVM(BaseEstimator):
     def __init__(self, learning_rate, la, n_iters):
         self.learning_rate = learning_rate
         self.la = la
-        self.iters = n_iters
+        self.n_iters = n_iters
         self.w = None
         self.b = None
 
@@ -21,7 +21,7 @@ class SVM(BaseEstimator):
         self.w = np.zeros(X.shape[1])
         self.b = 0
 
-        for _ in range(self.iters):
+        for _ in range(self.n_iters):
             i=0
             for val in X:
                 #przypadek, gdy badana próbka znajduje się w dobrej klasie
