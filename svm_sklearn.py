@@ -14,8 +14,7 @@ ImplementedClassifier = SVC()
 ImplementedClassifier.fit(X_train, y_train)
 ImplementedClass_pred = ImplementedClassifier.predict(X_test)
 
-print(f"F1 score score for Scikit-learn Implemented Classifier is: {f1_score(y_test, ImplementedClass_pred, average='macro')}")
-print(f"Precision score for Scikit-learn Implemented Classifier is: {precision_score(y_test, ImplementedClass_pred, average='macro')}")
-print(f"Accuracy score for Scikit-learn Implemented Classifier is: {accuracy_score(y_test, ImplementedClass_pred)}")
-print(f"Mean of cross val score for Scikit-learn Implemented Classifier is: {np.mean(cross_val_score(ImplementedClassifier, X, y, cv=5))}")
-
+print(f"F1 score score for Scikit-learn Implemented Classifier is: {(round(f1_score(y_test, ImplementedClass_pred, average='macro'),4))}")
+print(f"Precision score for Scikit-learn Implemented Classifier is: {(round(precision_score(y_test, ImplementedClass_pred, average='macro'),4))}")
+print(f"Accuracy score for Scikit-learn Implemented Classifier is: {(round(accuracy_score(y_test, ImplementedClass_pred),4))}")
+print(f"Mean of cross val score for Scikit-learn Implemented Classifier is: {(round(np.mean(cross_val_score(ImplementedClassifier, X, y, cv=5)),4))}")

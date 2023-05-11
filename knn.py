@@ -11,9 +11,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, train_s
 
 neigh = KNeighborsClassifier()
 neigh.fit(X_train, y_train)
-trees_pred = neigh.predict(X_test)
+knn_pred = neigh.predict(X_test)
 
-print(f"F1 score score for Scikit-learn implemented decistion trees classifier is: {f1_score(y_test, trees_pred, average='macro')}")
-print(f"Precision score for Scikit-learn implemented decistion trees classifier is: {precision_score(y_test, trees_pred, average='macro')}")
-print(f"Accuracy score for Scikit-learn implemented decistion trees classifier is: {accuracy_score(y_test, trees_pred)}")
-print(f"Mean of cross val score for Scikit-learn Implemented Classifier is: {np.mean(cross_val_score(neigh, X, y, cv=5))}")
+print(f"F1 score score for Scikit-learn Implemented Classifier is: {(round(f1_score(y_test, knn_pred, average='macro'),4))}")
+print(f"Precision score for Scikit-learn Implemented Classifier is: {(round(precision_score(y_test, knn_pred, average='macro'),4))}")
+print(f"Accuracy score for Scikit-learn Implemented Classifier is: {(round(accuracy_score(y_test, knn_pred),4))}")
+print(f"Mean of cross val score for Scikit-learn Implemented Classifier is: {(round(np.mean(cross_val_score(neigh, X, y, cv=5)),4))}")
