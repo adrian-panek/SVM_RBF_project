@@ -1,9 +1,5 @@
 import numpy as np
 from scipy.spatial.distance import cdist
-from pandas import read_csv
-from sklearn.datasets import make_blobs, make_classification, make_circles
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score
 from sklearn.base import BaseEstimator
 
 class SVM(BaseEstimator):

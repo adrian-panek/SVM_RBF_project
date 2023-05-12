@@ -1,6 +1,6 @@
 import pytest
 
-from SVM import SVM
+from algorithms.SVM import SVM
 
 from sklearn.datasets import make_blobs
 
