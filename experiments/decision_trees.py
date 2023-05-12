@@ -23,7 +23,7 @@ prec_score = f"Precision score for Scikit-learn Implemented Classifier is: {(rou
 acc_score = f"Accuracy score for Scikit-learn Implemented Classifier is: {(round(accuracy_score(y_test, trees_pred),4))}"
 crs_val_score = f"Mean of cross val score for Scikit-learn Implemented Classifier is: {(round(np.mean(cross_val_score(clf, X, y, cv=5)),4))}"
 
-with open("results/decision_trees_results.npy", "wb") as f:
+with open("../results/decision_trees_results.npy", "wb") as f:
     np.save(f, f1)
     np.save(f, prec_score)
     np.save(f, acc_score)

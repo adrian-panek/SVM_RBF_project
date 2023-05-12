@@ -24,7 +24,7 @@ acc_score = f"Accuracy score for Scikit-learn Implemented Classifier is: {(round
 crs_val_score = f"Mean of cross val score for Scikit-learn Implemented Classifier is: {(round(np.mean(cross_val_score(ImplementedClassifier, X, y, cv=5)),4))}"
 
 
-with open("results/svm_sklearn_results.npy", "wb") as f:
+with open("../results/svm_sklearn_results.npy", "wb") as f:
     np.save(f, f1)
     np.save(f, prec_score)
     np.save(f, acc_score)
