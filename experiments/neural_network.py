@@ -28,3 +28,14 @@ with open("../results/neural_network_results.npy", "wb") as f:
     np.save(f, prec_score)
     np.save(f, acc_score)
     np.save(f, crs_val_score)
+
+rskf = RepeatedStratifiedKFold(n_splits=2, n_repeats=5)
+vec = []
+
+for (train_index, test_index) in rskf.split(X, y):
+    x_train_2, x_test_2 = X[train_index], X[test_index]
+    y_train_2, y_test_2 = y[train_index], y[test_index]
+    mlpc.fit(x_train_2, y_train_2)
+    support_matrix = mlpc.predict(x_test_2)
+    acc_score = accuracy_score(y_test_2, support_matrix)
+    vec.append(acc_score)

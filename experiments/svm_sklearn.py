@@ -5,7 +5,7 @@ from sklearn.svm import SVC
 
 from sklearn.datasets import make_classification
 from sklearn.metrics import f1_score, precision_score, accuracy_score
-from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.model_selection import cross_val_score, train_test_split, RepeatedStratifiedKFold
 
 X, y = make_classification(n_samples=1000, n_features=2, n_informative=2, n_redundant=0, n_repeated=0, random_state=59)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, train_size=0.8)
@@ -23,9 +23,19 @@ prec_score = f"Precision score for Scikit-learn Implemented Classifier is: {(rou
 acc_score = f"Accuracy score for Scikit-learn Implemented Classifier is: {(round(accuracy_score(y_test, ImplementedClass_pred),4))}"
 crs_val_score = f"Mean of cross val score for Scikit-learn Implemented Classifier is: {(round(np.mean(cross_val_score(ImplementedClassifier, X, y, cv=5)),4))}"
 
-
 with open("../results/svm_sklearn_results.npy", "wb") as f:
     np.save(f, f1)
     np.save(f, prec_score)
     np.save(f, acc_score)
     np.save(f, crs_val_score)
+
+rskf = RepeatedStratifiedKFold(n_splits=2, n_repeats=5)
+vec = []
+
+for (train_index, test_index) in rskf.split(X, y):
+    x_train_2, x_test_2 = X[train_index], X[test_index]
+    y_train_2, y_test_2 = y[train_index], y[test_index]
+    ImplementedClassifier.fit(x_train_2, y_train_2)
+    support_matrix = ImplementedClassifier.predict(x_test_2)
+    acc_score = accuracy_score(y_test_2, support_matrix)
+    vec.append(acc_score)
