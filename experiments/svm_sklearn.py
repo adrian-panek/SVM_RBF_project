@@ -8,7 +8,7 @@ from sklearn.metrics import f1_score, precision_score, accuracy_score
 from sklearn.model_selection import cross_val_score, train_test_split, RepeatedStratifiedKFold
 
 X, y = make_classification(n_samples=1000, n_features=2, n_informative=2, n_redundant=0, n_repeated=0, random_state=59)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, train_size=0.8)
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8)
 
 fig = plt.figure(figsize = (10,10))
 plt.scatter(X[:, 0], X[:, 1], marker="o", c=y, s=25, edgecolor="k")
