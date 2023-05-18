@@ -2,3 +2,5 @@ __pycache__
 Untitled.ipynb
 .ipynb_checkpoints
 .pytest_cache
+results_read.py
+venv
