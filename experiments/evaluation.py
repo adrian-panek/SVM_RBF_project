@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from SVM import SVM, RBF
+from SVM_copy import SVM
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
@@ -39,8 +39,7 @@ if classifier == 'decision_trees':
 if classifier == 'svm_our':
     lr = 0.1
     la = 1
-    X = RBF(X, 0.5)
-    classifier = SVM(lr, la, 100)
+    classifier = SVM(la=la)
 
 fig = plt.figure(figsize = (10,10))
 plt.scatter(X[:, 0], X[:, 1], marker="o", c=y, s=25, edgecolor="k")
