@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from SVM import SVM, RBF
+from SVM_copy import SVM
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
@@ -12,8 +12,8 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import f1_score, precision_score, accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 
-classifier = 'knn'
-real_dataset = True
+classifier = 'svm_our'
+real_dataset = False
 
 if real_dataset:
     dataset = pd.read_csv('../dataset/Cancer_Data.csv', sep=',')
@@ -27,20 +27,22 @@ else:
 if classifier == 'neural_netowork':
     classifier = MLPClassifier()
     
-if classifier == 'knn':
+elif classifier == 'knn':
     classifier = KNeighborsClassifier()
 
-if classifier == 'svm_sklearn':
+elif classifier == 'svm_sklearn':
     classifier = SVC()
 
-if classifier == 'decision_trees':
+elif classifier == 'decision_trees':
     classifier = DecisionTreeClassifier()
 
-if classifier == 'svm_our':
-    lr = 0.1
-    la = 1
-    X = RBF(X, 0.5)
-    classifier = SVM(lr, la, 100)
+elif classifier == 'svm_our':
+    # lr = 0.1
+    # la = 1
+    # X = RBF(X, 0.5)
+    classifier = SVM(la=1)
+else:
+    print("Incorrect classifier has been specified")
 
 fig = plt.figure(figsize = (10,10))
 plt.scatter(X[:, 0], X[:, 1], marker="o", c=y, s=25, edgecolor="k")
@@ -61,13 +63,13 @@ for (train_index, test_index) in rskf.split(X, y):
     support_matrix = classifier.predict(x_test_2)
     acc_score = accuracy_score(y_test_2, support_matrix)
     total_acc_score.append(acc_score)
-    f1_scor = f1_score(y_test_2, support_matrix)
+    f1_scor = f1_score(y_test_2, support_matrix, average='macro')
     total_f1_score.append(f1_scor)
-    prec_score = precision_score(y_test_2, support_matrix)
+    prec_score = precision_score(y_test_2, support_matrix, average='macro')
     total_prec_score.append(prec_score)
 
 
-with open(f'../results/{classifier}_results.npy', 'wb') as f:
-    np.save(f, round(np.mean(total_acc_score),3))
-    np.save(f, round(np.mean(total_f1_score),3))
-    np.save(f, round(np.mean(total_prec_score),3))
+with open(f'../results/SVM_fake_results.npy', 'wb') as f:
+    np.save(f, total_acc_score)
+    np.save(f, total_f1_score)
+    np.save(f, total_prec_score)
