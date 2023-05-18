@@ -12,7 +12,7 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import f1_score, precision_score, accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 
-classifier = 'knn'
+classifier = 'svm_our'
 real_dataset = True
 
 if real_dataset:
