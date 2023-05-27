@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from SVM_copy import SVM
+from SVM import SVM
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
@@ -12,7 +12,9 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import f1_score, precision_score, accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 
-classifier = 'svm_our'
+from scipy.stats import ttest_ind
+
+classifier = 'decision_trees'
 real_dataset = False
 
 if real_dataset:
@@ -24,7 +26,7 @@ if real_dataset:
 else:
     X, y = make_classification(n_samples=1000, n_features=2, n_informative=2, n_redundant=0, n_repeated=0, random_state=59)
 
-if classifier == 'neural_netowork':
+if classifier == 'neural_network':
     classifier = MLPClassifier()
     
 elif classifier == 'knn':
@@ -55,6 +57,7 @@ rskf = RepeatedStratifiedKFold(n_splits=2, n_repeats=5)
 total_acc_score = []
 total_f1_score = []
 total_prec_score = []
+ttest_val = []
 
 for (train_index, test_index) in rskf.split(X, y):
     x_train_2, x_test_2 = X[train_index], X[test_index]
@@ -67,9 +70,11 @@ for (train_index, test_index) in rskf.split(X, y):
     total_f1_score.append(f1_scor)
     prec_score = precision_score(y_test_2, support_matrix, average='macro')
     total_prec_score.append(prec_score)
+    ttest_val.append(ttest_ind(y_test_2, support_matrix))
 
+print(ttest_val)
 
-with open(f'../results/SVM_fake_results.npy', 'wb') as f:
-    np.save(f, total_acc_score)
-    np.save(f, total_f1_score)
-    np.save(f, total_prec_score)
+# with open(f'../results/SVM_fake_results.npy', 'wb') as f:
+#     np.save(f, total_acc_score)
+#     np.save(f, total_f1_score)
+#     np.save(f, total_prec_score)
