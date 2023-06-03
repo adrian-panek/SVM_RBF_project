@@ -12,16 +12,16 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import f1_score, precision_score, accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 
-from scipy.stats import ttest_ind
-
-classifier = 'decision_trees'
-real_dataset = True
+classifier = 'svm_our'
+real_dataset = False
 
 if real_dataset:
     dataset = pd.read_csv('../dataset/Cancer_Data.csv', sep=',')
-    X = np.zeros((len(dataset['radius_mean'].values), 2))
-    X[:,0] = dataset['radius_mean'].values
-    X[:,1] = dataset['texture_mean'].values
+    X = np.zeros((len(dataset['radius_mean'].values), 4))
+    X[:,0] = dataset['radius_mean'].values/10
+    X[:,1] = dataset['texture_mean'].values/10
+    X[:,2] = dataset['area_mean'].values/100
+    X[:,3] = dataset['smoothness_mean'].values*10
     y = np.where(dataset['diagnosis'].values == 'M', -1, 1)
 else:
     X, y = make_classification(n_samples=1000, n_features=4, n_informative=4, n_redundant=0, n_repeated=0, random_state=59)
@@ -58,7 +58,6 @@ rskf = RepeatedStratifiedKFold(n_splits=2, n_repeats=5)
 total_acc_score = []
 total_f1_score = []
 total_prec_score = []
-ttest_val = []
 
 for (train_index, test_index) in rskf.split(X, y):
     x_train_2, x_test_2 = X[train_index], X[test_index]
@@ -71,9 +70,11 @@ for (train_index, test_index) in rskf.split(X, y):
     total_f1_score.append(f1_scor)
     prec_score = precision_score(y_test_2, support_matrix, average='macro')
     total_prec_score.append(prec_score)
-    ttest_val.append(ttest_ind(y_test_2, support_matrix))
 
-print(ttest_val)
+print(total_acc_score)
+print(total_f1_score)
+print(total_prec_score)
+
 # with open(f'../results/metrics/{classifier}_results.npy', 'wb') as f:
 #     np.save(f, total_acc_score)
 #     np.save(f, total_f1_score)
