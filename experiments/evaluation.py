@@ -12,7 +12,9 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import f1_score, precision_score, accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 
-classifier = 'svm_our'
+from scipy.stats import ttest_ind
+
+classifier = 'decision_trees'
 real_dataset = True
 
 if real_dataset:
@@ -56,6 +58,7 @@ rskf = RepeatedStratifiedKFold(n_splits=2, n_repeats=5)
 total_acc_score = []
 total_f1_score = []
 total_prec_score = []
+ttest_val = []
 
 for (train_index, test_index) in rskf.split(X, y):
     x_train_2, x_test_2 = X[train_index], X[test_index]
@@ -68,8 +71,10 @@ for (train_index, test_index) in rskf.split(X, y):
     total_f1_score.append(f1_scor)
     prec_score = precision_score(y_test_2, support_matrix, average='macro')
     total_prec_score.append(prec_score)
+    ttest_val.append(ttest_ind(y_test_2, support_matrix))
 
-with open(f'../results/metrics/{classifier}_results.npy', 'wb') as f:
-    np.save(f, total_acc_score)
-    np.save(f, total_f1_score)
-    np.save(f, total_prec_score)
+print(ttest_val)
+# with open(f'../results/metrics/{classifier}_results.npy', 'wb') as f:
+#     np.save(f, total_acc_score)
+#     np.save(f, total_f1_score)
+#     np.save(f, total_prec_score)
