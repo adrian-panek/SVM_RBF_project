@@ -71,11 +71,7 @@ for (train_index, test_index) in rskf.split(X, y):
     prec_score = precision_score(y_test_2, support_matrix, average='macro')
     total_prec_score.append(prec_score)
 
-print(total_acc_score)
-print(total_f1_score)
-print(total_prec_score)
-
-# with open(f'../results/metrics/{classifier}_results.npy', 'wb') as f:
-#     np.save(f, total_acc_score)
-#     np.save(f, total_f1_score)
-#     np.save(f, total_prec_score)
+with open(f'../results/metrics/{classifier}_results.npy', 'wb') as f:
+    np.save(f, total_acc_score)
+    np.save(f, total_f1_score)
+    np.save(f, total_prec_score)
