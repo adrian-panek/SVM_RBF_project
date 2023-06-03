@@ -18,5 +18,5 @@ Struktura folderów i plików:
 - tests: <br />
   tests.py - testy jednostkowe sprawdzające poprawność działania kodu
   
-.gitignore - lista plików, znajdujących się na lokalnym środowisku, które nie powinny znaleźć się w repozytorium
+.gitignore - lista plików, znajdujących się na lokalnym środowisku, które nie powinny znaleźć się w repozytorium <br />
 requirements.txt - biblioteki potrzebne do powtórzenia badań we własnym środowisku
