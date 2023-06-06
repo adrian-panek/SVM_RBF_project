@@ -13,16 +13,18 @@ from sklearn.metrics import f1_score, precision_score, accuracy_score
 from sklearn.model_selection import RepeatedStratifiedKFold
 
 classifier = 'svm_our'
-real_dataset = True
+real_dataset = False
 
 if real_dataset:
     dataset = pd.read_csv('../dataset/Cancer_Data.csv', sep=',')
     X = np.zeros((len(dataset['radius_mean'].values), 2))
     X[:,0] = dataset['radius_mean'].values
     X[:,1] = dataset['texture_mean'].values
-    y = np.where(dataset['diagnosis'].values == 'M', -1, 1)
+    y = np.where(dataset['diagnosis'].values == 'M', -1.0, 1.0)
 else:
-    X, y = make_classification(n_samples=1000, n_features=2, n_informative=2, n_redundant=0, n_repeated=0, random_state=59)
+    X, y = make_classification(n_samples=1000, n_features=4, n_informative=4, n_redundant=0, n_repeated=0, random_state=59)
+    y = np.where(y == 1, 1.0, -1.0)
+
 
 if classifier == 'neural_netowork':
     classifier = MLPClassifier()
@@ -37,13 +39,12 @@ if classifier == 'decision_trees':
     classifier = DecisionTreeClassifier()
 
 if classifier == 'svm_our':
-    lr = 0.1
     la = 1
     classifier = SVM(la=la)
 
-fig = plt.figure(figsize = (10,10))
-plt.scatter(X[:, 0], X[:, 1], marker="o", c=y, s=25, edgecolor="k")
-plt.show()
+# fig = plt.figure(figsize = (10,10))
+# plt.scatter(X[:, 0], X[:, 1], marker="o", c=y, s=25, edgecolor="k")
+# plt.show()
 
 classifier.fit(X, y)
 pred = classifier.predict(X)
@@ -54,19 +55,22 @@ total_f1_score = []
 total_prec_score = []
 
 for (train_index, test_index) in rskf.split(X, y):
-    x_train_2, x_test_2 = X[train_index], X[test_index]
-    y_train_2, y_test_2 = y[train_index], y[test_index]
-    classifier.fit(x_train_2, y_train_2)
-    support_matrix = classifier.predict(x_test_2)
-    acc_score = accuracy_score(y_test_2, support_matrix)
+    X_train, X_test = X[train_index], X[test_index]
+    y_train, y_test = y[train_index], y[test_index]
+    classifier.fit(X_train, y_train)
+    support_matrix = classifier.predict(X_test)
+    acc_score = accuracy_score(y_test, support_matrix)
     total_acc_score.append(acc_score)
-    f1_scor = f1_score(y_test_2, support_matrix)
+    f1_scor = f1_score(y_test, support_matrix)
     total_f1_score.append(f1_scor)
-    prec_score = precision_score(y_test_2, support_matrix)
+    prec_score = precision_score(y_test, support_matrix)
     total_prec_score.append(prec_score)
 
+print(np.mean(total_acc_score))
+print(np.mean(total_f1_score))
+print(np.mean(total_prec_score))
 
-with open(f'../results/{classifier}_results.npy', 'wb') as f:
-    np.save(f, round(np.mean(total_acc_score),3))
-    np.save(f, round(np.mean(total_f1_score),3))
-    np.save(f, round(np.mean(total_prec_score),3))
+# with open(f'../results/{classifier}_results.npy', 'wb') as f:
+#     np.save(f, round(np.mean(total_acc_score),3))
+#     np.save(f, round(np.mean(total_f1_score),3))
+#     np.save(f, round(np.mean(total_prec_score),3))
