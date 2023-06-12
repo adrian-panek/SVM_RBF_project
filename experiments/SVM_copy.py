@@ -6,7 +6,7 @@ import cvxopt
 def RBF(x, y, sigma=5.0):
     return np.exp(-linalg.norm(x-y)**2 / (2 * (sigma ** 2)))
 
-class SVM(object):
+class SVM(BaseEstimator):
     def __init__(self, kernel=RBF, la=None):
         self.kernel = kernel
         self.la = la
@@ -56,25 +56,16 @@ class SVM(object):
             self.b -= np.sum(self.a * self.sv_y * K[ind[n],sv])
         self.b /= len(self.a)
 
-        # Weight vector
-        # if self.kernel == linear_kernel:
-        #     self.w = np.zeros(n_features)
-        #     for n in range(len(self.a)):
-        #         self.w += self.a[n] * self.sv_y[n] * self.sv[n]
-        # else:
         self.w = None
 
     def project(self, X):
-        if self.w is not None:
-            return np.dot(X, self.w) + self.b
-        else:
-            y_predict = np.zeros(len(X))
-            for i in range(len(X)):
-                s = 0
-                for a, sv_y, sv in zip(self.a, self.sv_y, self.sv):
-                    s += a * sv_y * self.kernel(X[i], sv)
-                y_predict[i] = s
-            return y_predict + self.b
+        y_predict = np.zeros(len(X))
+        for i in range(len(X)):
+            s = 0
+            for a, sv_y, sv in zip(self.a, self.sv_y, self.sv):
+                s += a * sv_y * self.kernel(X[i], sv)
+            y_predict[i] = s
+        return y_predict + self.b
 
     def predict(self, X):
         return np.sign(self.project(X))
